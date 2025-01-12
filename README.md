@@ -252,7 +252,3 @@ Ensure all smart contract and frontend interactions are secure and free from vul
 - This project is licensed under the MIT License.
 
 ---
-
-Feel free to adjust any sections as needed and let me know when you're ready to move on to the next part! 😊
-
----
