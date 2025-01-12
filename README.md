@@ -1,4 +1,3 @@
-```markdown
 # Domain DApp
 
 ## Overview
@@ -16,11 +15,12 @@
 ## Prerequisites
 
 Before setting up the project, ensure you have the following prerequisites installed:
+```markdown
 
 - **Node.js**: [Download and install Node.js](https://nodejs.org/).
 - **MetaMask**: Install the MetaMask browser extension.
 - **Git**: [Download and install Git](https://git-scm.com/).
-
+```
 ## Setup and Installation
 
 ### Cloning the Repository
