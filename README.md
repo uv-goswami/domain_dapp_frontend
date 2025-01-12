@@ -28,7 +28,7 @@ Before setting up the project, ensure you have the following prerequisites insta
 To get started, clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/domain-dapp.git
+git clone https://github.com/uv-goswami/domain_dapp_frontend.git
 cd domain-dapp
 ```
 
