@@ -1,5 +1,3 @@
-Certainly! Here's the comprehensive documentation formatted for a `README.md` on GitHub. This will cover all the necessary sections from basic to advanced details.
-
 ---
 
 ```markdown
