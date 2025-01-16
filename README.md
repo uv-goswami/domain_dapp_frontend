@@ -1,5 +1,5 @@
 # RealmDomains
-
+ 
 ## Introduction
 
 **RealmDomains** is a decentralized platform built on the Ethereum blockchain that allows users to list, buy, and manage domain names securely and transparently. Our platform leverages the power of blockchain technology to provide a user-friendly experience for managing your digital assets.
