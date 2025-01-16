@@ -1,254 +1,152 @@
-# Domain DApp
+# RealmDomains
 
-## Overview
+## Introduction
 
-**Domain DApp** is a decentralized application that allows users to list and purchase domain names on the Ethereum blockchain. The application supports both Ethereum Name Service (ENS) domains and traditional DNS-based domains, providing a flexible and secure marketplace for domain transactions.
+**RealmDomains** is a decentralized platform built on the Ethereum blockchain that allows users to list, buy, and manage domain names securely and transparently. Our platform leverages the power of blockchain technology to provide a user-friendly experience for managing your digital assets.
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Features](#features)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+  - [Listing a Domain](#listing-a-domain)
+  - [Buying a Domain](#buying-a-domain)
+- [Directory Structure](#directory-structure)
+- [Documentation](#documentation)
+  - [Introduction](docs/Introduction.md)
+  - [Hardhat](docs/Hardhat.md)
+  - [Node.js](docs/Node.md)
+  - (Add other links here)
+- [Contributing](#contributing)
+- [Support](#support)
+- [License](#license)
 
 ## Features
 
-- **Decentralized**: Operates on the Ethereum blockchain, ensuring transparency and security.
-- **ENS Support**: Integrates with Ethereum Name Service for seamless domain management.
-- **DNS Support**: Future integration with traditional DNS domains for broader coverage.
-- **User-Friendly Interface**: Easy-to-use interface for listing and purchasing domains.
-- **MetaMask Integration**: Connect and interact with the application using MetaMask.
-
-## Prerequisites
-
-Before setting up the project, ensure you have the following prerequisites installed:
-```markdown
-
-- **Node.js**: [Download and install Node.js](https://nodejs.org/).
-- **MetaMask**: Install the MetaMask browser extension.
-- **Git**: [Download and install Git](https://git-scm.com/).
-```
-## Setup and Installation
-
-### Cloning the Repository
-
-To get started, clone the repository:
-
-```bash
-git clone https://github.com/uv-goswami/domain_dapp_frontend.git
-cd domain-dapp
-```
-
-### Installing Dependencies
-
-Navigate to the project directory and install the necessary dependencies:
-
-```bash
-npm install
-```
-
-### Configuration
-
-Ensure you have a `.env` file in your project directory for environment variables (if needed).
-
-## Smart Contract Development
-
-### Contract Structure
-
-The smart contract manages domain registrations, listings, and purchases. Key functions include:
-
-- **listDomain**: Allows users to list a domain for sale.
-- **buyDomain**: Allows users to purchase a listed domain.
-- **getDomainOwner**: Retrieves the owner of a domain.
-
-### Key Functions
-
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-
-contract DomainMarketplace {
-    struct Domain {
-        address owner;
-        uint256 price;
-        bool isListed;
-    }
-
-    mapping(string => Domain) public domains;
-
-    function listDomain(string memory domainName, uint256 price) public {
-        require(price > 0, "Price must be greater than zero");
-        domains[domainName] = Domain(msg.sender, price, true);
-    }
-
-    function buyDomain(string memory domainName) public payable {
-        Domain storage domain = domains[domainName];
-        require(domain.isListed, "Domain not listed for sale");
-        require(msg.value >= domain.price, "Insufficient funds");
-
-        address previousOwner = domain.owner;
-        domain.owner = msg.sender;
-        domain.isListed = false;
-
-        payable(previousOwner).transfer(msg.value);
-    }
-
-    function getDomainOwner(string memory domainName) public view returns (address) {
-        return domains[domainName].owner;
-    }
-}
-```
-
-### Deployment
-
-Deploy the smart contract on your local Hardhat node or a testnet.
-
-```bash
-npx hardhat run scripts/deploy.js --network localhost
-```
-
-## Frontend Development
-
-### React Setup
-
-Set up a React frontend to interact with the smart contract. Ensure you have installed the necessary dependencies:
-
-```bash
-cd frontend
-npm install
-```
-
-### MetaMask Integration
-
-Use `ethers.js` to integrate MetaMask for user authentication and transactions.
-
-### User Interface Components
-
-Create components for listing and buying domains, ensuring a user-friendly experience.
-
-## Backend Development
-
-### Server Setup
-
-Use Express.js to set up your backend server and handle API requests.
-
-```javascript
-const express = require('express');
-const ethers = require('ethers');
-const app = express();
-const port = 3000;
-
-app.use(express.json());
-
-const provider = new ethers.JsonRpcProvider('http://127.0.0.1:8545');
-const contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
-const contractABI = [ /* Replace with your contract ABI */ ];
-const wallet = new ethers.Wallet('YOUR_PRIVATE_KEY', provider);
-const contract = new ethers.Contract(contractAddress, contractABI, wallet);
-
-app.post('/list-domain', async (req, res) => {
-    const { domainName, price } = req.body;
-    try {
-        const tx = await contract.listDomain(domainName, ethers.parseEther(price));
-        await tx.wait();
-        res.status(200).send('Domain listed successfully!');
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-});
-
-app.post('/buy-domain', async (req, res) => {
-    const { domainName, price } = req.body;
-    try {
-        const tx = await contract.buyDomain(domainName, { value: ethers.parseEther(price) });
-        await tx.wait();
-        res.status(200).send('Domain purchased successfully!');
-    } catch (error) {
-        res.status(500).send(error.message);
-    }
-});
-
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
-```
-
-## Testing
-
-### Unit Tests
-
-Write unit tests for your smart contracts to ensure all functionalities work as expected.
-
-### Integration Tests
-
-Perform integration tests to ensure the frontend and backend interact correctly with the blockchain.
-
-### Manual Testing
-
-Manually test the DApp by listing and purchasing domains through the frontend.
-
-## Deployment
-
-### Local Deployment
-
-Deploy the smart contract locally and interact with it through your frontend.
-
-### Testnet Deployment
-
-Deploy your smart contract to a testnet like Rinkeby or Goerli.
-
-```bash
-npx hardhat run scripts/deploy.js --network rinkeby
-```
-
-### Mainnet Deployment
-
-Once tested, deploy your smart contract to the Ethereum mainnet.
-
-## Ownership Verification (Future Work)
-
-### ENS Integration
-
-Integrate with Ethereum Name Service for blockchain-based domain verification.
-
-### DNS Verification
-
-Implement DNS verification for traditional domains using TXT records.
-
-### Security Measures
-
-Ensure all smart contract and frontend interactions are secure and free from vulnerabilities.
-
-## User Guide
+- **Decentralized Domain Management**: Complete control over your domains without reliance on centralized authorities.
+- **Secure Transactions**: Transactions are securely handled on the Ethereum blockchain, ensuring trust and transparency.
+- **User-Friendly Interface**: An intuitive and easy-to-use interface for both beginners and advanced users.
+- **Scalability**: Seamless scalability to handle an increasing number of users and transactions.
+- **Transparency**: All transactions are publicly verifiable on the blockchain, promoting transparency and trust.
+
+## Getting Started
+
+### Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+- **Node.js**: Version 14.x or above. [Download Node.js](https://nodejs.org/)
+- **NPM**: Version 6.x or above. NPM comes with Node.js.
+- **Hardhat**: For smart contract development and deployment. [Hardhat Documentation](https://hardhat.org/)
+- **Ethereum Wallet**: Such as MetaMask for managing your digital assets. [MetaMask](https://metamask.io/)
+
+### Installation
+
+Follow these steps to set up the project locally:
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/your-username/RealmDomains.git
+   cd RealmDomains
+   ```
+
+2. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Configure Environment Variables**:
+   Create a `.env` file in the root directory and add the following variables:
+   ```
+   INFURA_PROJECT_URL=<Your Infura Project URL>
+   CONTRACT_ADDRESS=<Your Deployed Contract Address>
+   PRIVATE_KEY=<Your Ethereum Private Key>
+   PORT=3000
+   ```
+
+4. **Deploy the Smart Contract**:
+   ```bash
+   npx hardhat run scripts/deploy.js --network your-preferred-network
+   ```
+
+5. **Run the Backend Server**:
+   ```bash
+   node backend/server.cjs
+   ```
+
+6. **Launch the Frontend Application**:
+   ```bash
+   cd frontend
+   npm start
+   ```
+
+## Usage
 
 ### Listing a Domain
 
-1. Connect your MetaMask wallet.
-2. Enter the domain name and price.
-3. Click "List Domain" to list it for sale.
+To list a domain, send a POST request to the `/list-domain` endpoint with the domain name and price.
+
+**Example**:
+```bash
+curl -X POST http://localhost:3000/list-domain -H "Content-Type: application/json" -d '{"domainName": "exampledomain.eth", "price": "1"}'
+```
 
 ### Buying a Domain
 
-1. Browse listed domains.
-2. Select a domain and click "Buy Domain".
-3. Confirm the transaction in MetaMask.
+To buy a domain, send a POST request to the `/buy-domain` endpoint with the domain name and price.
 
-### Managing Domains
+**Example**:
+```bash
+curl -X POST http://localhost:3000/buy-domain -H "Content-Type: application/json" -d '{"domainName": "exampledomain.eth", "price": "1"}'
+```
 
-1. View your listed and purchased domains.
-2. Manage domain settings and prices.
+## Directory Structure
+
+```
+RealmDomains/
+├── contracts/
+│   └── DomainMarketplace.sol
+├── frontend/
+│   └── (Your frontend application files)
+├── backend/
+│   └── server.cjs
+├── scripts/
+│   └── deploy.js
+├── test/
+│   └── (Test files)
+├── docs/
+│   ├── Introduction.md
+│   ├── Hardhat.md
+│   ├── Node.md
+│   └── (Other documentation files)
+├── .env
+├── .gitignore
+├── README.md
+└── package.json
+```
+
+## Documentation
+
+For detailed information on the project's components, tools, and setup, refer to the following documentation:
+
+- [Introduction](docs/Introduction.md)
+- [Hardhat](docs/Hardhat.md)
+- [Node.js](docs/Node.md)
+- (Add other links here)
 
 ## Contributing
 
-### Guidelines
+We welcome contributions from the community! Whether it's reporting a bug, suggesting an improvement, or submitting a pull request, your input helps make RealmDomains better. Check out our [Contributing Guide](docs/Contributing.md) for more details.
 
-- Contributions are welcome! Please fork the repository and create a pull request with your changes.
+## Support
 
-### Code of Conduct
-
-- Follow the project's code of conduct to ensure a respectful and collaborative environment.
-
-### Issue Reporting
-
-- If you encounter any issues, please open an issue in the GitHub repository.
+If you have any questions or need assistance, feel free to reach out to our community on [Discord](link-to-discord) or [GitHub Issues](link-to-github-issues). We're here to help!
 
 ## License
 
-### License Information
-
-- This project is licensed under the MIT License.
+RealmDomains is open-source software licensed under the [MIT License](LICENSE).
 
 ---
