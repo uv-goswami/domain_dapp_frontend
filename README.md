@@ -157,7 +157,7 @@ Detailed documentation for the components, scripts, and smart contracts is avail
 - [ConnectWallet.jsx.md](docs/ConnectWallet.jsx.md): Detailed explanation of the `ConnectWallet.jsx` component.
 - [ViewListing.jsx.md](docs/ViewListing.jsx.md): Detailed explanation of the `ViewListing.jsx` component.
 - [DomainMarketplace.sol.md](docs/DomainMarketplace.sol.md): Detailed explanation of the `DomainMarketplace.sol` smart contract.
-- [Deploy.cjs.md](docs/deploy.cjs.md): Detailed explanation of the `deploy.cjs` deployment script.
+- [Deploy.cjs.md](docs/Deploy.cjs.md): Detailed explanation of the `deploy.cjs` deployment script.
 
 ## Contributing
 
